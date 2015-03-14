@@ -9,7 +9,7 @@ grammar Aql;
 //           | <Select> <From> <Where>
 //            | <Select> <From> <OrderBy>   ! is this allowed?
 //            | <Select> <From> <Where> <OrderBy>
-query	:	select from where? orderBy? ';';
+query	:	select from where? orderBy? ';'? EOF;
 
 //<Select> ::= 'SELECT' <SelectExpr>
 //         | 'SELECT' <TOP> <SelectExpr>
@@ -321,7 +321,7 @@ WS  :   ( ' '
         | '\t'
         | '\r'
         | '\n'
-        ) 
+        ) -> channel(HIDDEN)
     ;
 
 SELECT : ('S'|'s')('E'|'e')('L'|'l')('E'|'e')('C'|'c')('T'|'t') ;
