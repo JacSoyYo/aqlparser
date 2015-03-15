@@ -8,14 +8,14 @@ import org.junit.Test;
 import es.jacsoyyo.aqlparser.AqlParser.QueryContext;
 import es.sacyl.jacsoyyo.aqlparser.AqlListener;
 
-public class AqlTest {
+public class AqlTest2 {
 
 	@Test
-	public void secondTest() {
+	public void unTest() {
 		ANTLRInputStream inputStream = new ANTLRInputStream(
-				"SELECT e/ehr_status/subject/external_ref/id/value, diagnosis/data/items[at0002.1]/value "
-						+ "FROM EHR e CONTAINS Composition c[openEHR-EHR-COMPOSITION.problem_list.v1] CONTAINS Evaluation diagnosis[openEHR-EHR-EVALUATION.problem-diagnosis.v1] "
-						+ "WHERE c/name/value='Current Problems' AND diagnosis/data/items[at0002.1]/value/defining_code matches { terminology://Snomed-CT/hierarchy?rootConceptId=50043002 };");
+				"SELECT o/data[at0002]/events[at0003]/data/items[at0015]/items[at0018]/name "
+						+ "FROM Ehr [uid=$ehrUid] CONTAINS Composition c CONTAINS Observation o[openEHR-EHR-OBSERVATION.microbiology.v1] "
+						+ "WHERE o/data[at0002]/events[at0003]/data/items[at0015]/items[at0018]/items[at0019]/items[at0021]/name/defining_code/code_string matches {'18919-1', '18961-3', '19000-9'};");
 		AqlLexer aqlLexer = new AqlLexer(inputStream);
 		CommonTokenStream tokenStream = new CommonTokenStream(aqlLexer);
 		AqlParser aqlParser = new AqlParser(tokenStream);
@@ -28,4 +28,5 @@ public class AqlTest {
 		parseTreeWalker.walk(aqlListener, queryContext);
 		System.out.println("ble");
 	}
+
 }
