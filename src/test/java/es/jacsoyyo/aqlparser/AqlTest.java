@@ -2,11 +2,10 @@ package es.jacsoyyo.aqlparser;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.Test;
 
-import es.jacsoyyo.aqlparser.AqlParser.QueryContext;
-import es.sacyl.jacsoyyo.aqlparser.AqlListener;
+import es.sacyl.jacsoyyo.aqlparser.AqlQueryVisitor;
 
 public class AqlTest {
 
@@ -22,10 +21,12 @@ public class AqlTest {
 		aqlParser.setBuildParseTree(true);
 		aqlParser.setProfile(true);
 		// aqlParser.setTrace(true);
-		QueryContext queryContext = aqlParser.query();
-		ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
-		AqlListener aqlListener = new AqlListener();
-		parseTreeWalker.walk(aqlListener, queryContext);
-		System.out.println("ble");
+		ParseTree queryContext = aqlParser.query();
+		// ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
+		// AqlListener aqlListener = new AqlListener();
+		// parseTreeWalker.walk(aqlListener, queryContext);
+		AqlQueryVisitor aqlQueryVisitor = new AqlQueryVisitor();
+		String result = aqlQueryVisitor.visit(queryContext);
+		System.out.println(result);
 	}
 }
