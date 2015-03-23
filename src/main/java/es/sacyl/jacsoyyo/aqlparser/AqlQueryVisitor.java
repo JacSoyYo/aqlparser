@@ -10,9 +10,11 @@ import es.jacsoyyo.aqlparser.AqlParser.ContainsContext;
 import es.jacsoyyo.aqlparser.AqlParser.EhrContainsContext;
 import es.jacsoyyo.aqlparser.AqlParser.FromContext;
 import es.jacsoyyo.aqlparser.AqlParser.FromEHRContext;
+import es.jacsoyyo.aqlparser.AqlParser.IdentifiedPathContext;
 import es.jacsoyyo.aqlparser.AqlParser.OrderByContext;
 import es.jacsoyyo.aqlparser.AqlParser.QueryContext;
 import es.jacsoyyo.aqlparser.AqlParser.SelectContext;
+import es.jacsoyyo.aqlparser.AqlParser.SelectVarContext;
 import es.jacsoyyo.aqlparser.AqlParser.WhereContext;
 
 /**
@@ -26,6 +28,7 @@ public class AqlQueryVisitor extends AqlBaseVisitor<String> {
 	@Override
 	public String visitQuery(QueryContext ctx) {
 		super.visitQuery(ctx);
+		queryBuilder.append(";");
 		return queryBuilder.toString();
 	}
 
@@ -33,6 +36,22 @@ public class AqlQueryVisitor extends AqlBaseVisitor<String> {
 	public String visitSelect(SelectContext ctx) {
 		queryBuilder.append("SELECT ");
 		return super.visitSelect(ctx);
+	}
+
+	@Override
+	public String visitSelectVar(SelectVarContext ctx) {
+		ctx.identifiedPath();
+		ctx.asIdentifier();
+		return super.visitSelectVar(ctx);
+	}
+
+	@Override
+	public String visitIdentifiedPath(IdentifiedPathContext ctx) {
+		ctx.IDENTIFIER();
+		ctx.predicate(); // can we have a predicate in a selectVar?
+		ctx.objectPath(); // need to know RM type to traslate the path
+							// (e/ehr_id/value -> e.id)
+		return super.visitIdentifiedPath(ctx);
 	}
 
 	@Override
