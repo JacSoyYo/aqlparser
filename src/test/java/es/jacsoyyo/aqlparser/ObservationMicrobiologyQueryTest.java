@@ -1,7 +1,7 @@
 package es.jacsoyyo.aqlparser;
 
 
-public class ObservationQueryTest extends AbstractAqlQueryTest {
+public class ObservationMicrobiologyQueryTest extends AbstractAqlQueryTest {
 
 	@Override
 	protected String aqlQueryString() {
